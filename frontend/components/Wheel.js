@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import { moveClockwise } from "../state/action-creators";
 
 function Wheel(props) {
   return (
