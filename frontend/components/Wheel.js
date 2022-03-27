@@ -1,22 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { moveClockwise, moveCounterClockwise } from "../state/action-creators";
 
 function Wheel(props) {
+  useEffect(() => {
+    const cog = document.querySelector(`#wheel :nth-child(${props.wheel + 1})`);
+    cog.innerText = "B";
+    cog.classList.add("active");
+  }, [props.wheel]);
+
   const clockwiseClick = () => {
+    const cog = document.querySelector(`#wheel :nth-child(${props.wheel + 1})`);
+    cog.innerText = "";
+    cog.classList.remove("active");
     props.moveClockwise();
   };
 
   const counterClockwiseClick = () => {
+    const cog = document.querySelector(`#wheel :nth-child(${props.wheel + 1})`);
+    cog.innerText = "";
+    cog.classList.remove("active");
     props.moveCounterClockwise();
   };
 
   return (
     <div id="wrapper">
       <div id="wheel">
-        <div className="cog active" style={{ "--i": 0 }}>
-          B
-        </div>
+        <div className="cog" style={{ "--i": 0 }}></div>
         <div className="cog" style={{ "--i": 1 }}></div>
         <div className="cog" style={{ "--i": 2 }}></div>
         <div className="cog" style={{ "--i": 3 }}></div>
@@ -25,7 +35,6 @@ function Wheel(props) {
         {/* --i is a custom CSS property, no need to touch that nor the style object */}
       </div>
       <div id="keypad">
-        <span>{props.wheel}</span>
         <button id="counterClockwiseBtn" onClick={counterClockwiseClick}>
           Counter clockwise
         </button>
