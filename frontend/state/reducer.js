@@ -14,14 +14,19 @@ const initialWheelState = 0;
 function wheel(state = initialWheelState, action) {
   switch (action.type) {
     case MOVE_CLOCKWISE: {
-      if (state < 6 && state >= 0) {
+      if (state < 5) {
         return state + 1;
+      }
+      if (state === 5) {
+        return (state = 0);
       }
       return;
     }
     case MOVE_COUNTERCLOCKWISE: {
-      if (state > 0 && state < 7) {
+      if (state > 0) {
         return state - 1;
+      } else if (state === 0) {
+        return (state = 5);
       }
       return;
     }

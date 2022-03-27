@@ -1,8 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
-import { moveClockwise } from "../state/action-creators";
+import { moveClockwise, moveCounterClockwise } from "../state/action-creators";
 
 function Wheel(props) {
+  const clockwiseClick = () => {
+    props.moveClockwise();
+  };
+
+  const counterClockwiseClick = () => {
+    props.moveCounterClockwise();
+  };
+
   return (
     <div id="wrapper">
       <div id="wheel">
@@ -17,10 +25,25 @@ function Wheel(props) {
         {/* --i is a custom CSS property, no need to touch that nor the style object */}
       </div>
       <div id="keypad">
-        <button id="counterClockwiseBtn">Counter clockwise</button>
-        <button id="clockwiseBtn">Clockwise</button>
+        <span>{props.wheel}</span>
+        <button id="counterClockwiseBtn" onClick={counterClockwiseClick}>
+          Counter clockwise
+        </button>
+        <button onClick={clockwiseClick} id="clockwiseBtn">
+          Clockwise
+        </button>
       </div>
     </div>
   );
 }
-export default connect()(Wheel);
+
+const mapStateToProps = ({ wheel }) => {
+  return {
+    wheel,
+  };
+};
+
+export default connect(mapStateToProps, {
+  moveClockwise,
+  moveCounterClockwise,
+})(Wheel);

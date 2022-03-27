@@ -10,17 +10,15 @@ import {
   RESET_FORM,
 } from "./action-types";
 
-export function moveClockwise(clockwise) {
+export function moveClockwise() {
   return {
     type: MOVE_CLOCKWISE,
-    payload: clockwise,
   };
 }
 
-export function moveCounterClockwise(counterClockwise) {
+export function moveCounterClockwise() {
   return {
     type: MOVE_COUNTERCLOCKWISE,
-    payload: counterClockwise,
   };
 }
 
