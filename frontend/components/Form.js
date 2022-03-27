@@ -1,36 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { setMessage, inputChange, resetForm } from "../state/action-creators";
 import * as actionCreators from "../state/action-creators";
 
 export function Form(props) {
-  const [state, setState] = useState({
-    question_text: "",
-    true_answer_text: "",
-    false_answer_text: "",
-    disabled: true,
-  });
+  const [buttonDisabled, setButtonDisabled] = useState(true);
+  useEffect(() => {
+    if (
+      props.form.newQuestion.trim().length > 1 &&
+      props.form.newTrueAnswer.trim().length > 1 &&
+      props.form.newFalseAnswer.trim().length > 1
+    ) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [props.form]);
 
   const onChange = (evt) => {
-    setState({
-      ...state,
-      question_text: evt.target.value,
-      true_answer_text: evt.target.value,
-      false_answer_text: evt.target.value,
-    });
+    props.inputChange(evt);
   };
 
   const onSubmit = (evt) => {
-    evt.prevent.default();
-    if (
-      state.question_text === "" ||
-      state.true_answer_text === "" ||
-      state.false_answer_text === ""
-    ) {
-      return props.setMessage();
-    } else {
-      // props.setQuiz({...state, evt.target.value});
-    }
+    evt.preventDefault();
   };
 
   return (
@@ -39,26 +31,37 @@ export function Form(props) {
       <input
         maxLength={50}
         onChange={onChange}
+        value={props.form.newQuestion}
         id="newQuestion"
         placeholder="Enter question"
       />
       <input
         maxLength={50}
         onChange={onChange}
+        value={props.form.newTrueAnswer}
         id="newTrueAnswer"
         placeholder="Enter true answer"
       />
       <input
         maxLength={50}
         onChange={onChange}
+        value={props.form.newFalseAnswer}
         id="newFalseAnswer"
         placeholder="Enter false answer"
       />
-      <button id="submitNewQuizBtn" disabled>
+      <button id="submitNewQuizBtn" disabled={buttonDisabled}>
         Submit new quiz
       </button>
     </form>
   );
 }
 
-export default connect((st) => st, actionCreators)(Form);
+const mapStateToProps = ({ form }) => {
+  return {
+    form,
+  };
+};
+
+export default connect(mapStateToProps, {
+  inputChange,
+})(Form);

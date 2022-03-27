@@ -77,9 +77,8 @@ function form(state = initialFormState, action) {
   switch (action.type) {
     case INPUT_CHANGE: {
       return {
-        newQuestion: action.payload.newQuestion,
-        newTrueAnswer: action.payload.newTrueAnswer,
-        newFalseAnswer: action.payload.newFalseAnswer,
+        ...state,
+        [action.payload.target.id]: action.payload.target.value,
       };
     }
     case RESET_FORM: {

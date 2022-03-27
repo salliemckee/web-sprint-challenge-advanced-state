@@ -50,10 +50,9 @@ export function inputChange(change) {
   };
 }
 
-export function resetForm(reset) {
+export function resetForm() {
   return {
     type: RESET_FORM,
-    payload: reset,
   };
 }
 
