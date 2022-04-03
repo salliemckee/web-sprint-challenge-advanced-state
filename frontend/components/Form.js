@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { setMessage, inputChange, resetForm } from "../state/action-creators";
-import * as actionCreators from "../state/action-creators";
+import {
+  setMessage,
+  inputChange,
+  resetForm,
+  postQuiz,
+} from "../state/action-creators";
 
 export function Form(props) {
   const [buttonDisabled, setButtonDisabled] = useState(true);
   useEffect(() => {
     if (
-      props.form.newQuestion.trim().length > 1 &&
-      props.form.newTrueAnswer.trim().length > 1 &&
-      props.form.newFalseAnswer.trim().length > 1
+      props.form.newQuestion.trim().length >= 1 &&
+      props.form.newTrueAnswer.trim().length >= 1 &&
+      props.form.newFalseAnswer.trim().length >= 1
     ) {
       setButtonDisabled(false);
     } else {
@@ -23,6 +27,7 @@ export function Form(props) {
 
   const onSubmit = (evt) => {
     evt.preventDefault();
+    props.postQuiz(props.form);
   };
 
   return (
@@ -64,4 +69,7 @@ const mapStateToProps = ({ form }) => {
 
 export default connect(mapStateToProps, {
   inputChange,
+  setMessage,
+  resetForm,
+  postQuiz,
 })(Form);
