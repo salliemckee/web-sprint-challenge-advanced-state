@@ -10,12 +10,18 @@ import {
 
 function Quiz(props) {
   useEffect(() => {
-    props.fetchQuiz();
+    if (!props.quiz) {
+      props.fetchQuiz();
+    }
   }, []);
 
   const handleSelect = (e) => {
     props.selectAnswer(e.target.id);
     props.setMessage("");
+    const oldElement = document.getElementsByClassName("selected");
+    oldElement[0].classList.remove("selected");
+    const element = document.getElementById(e.target.id);
+    element.classList.add("selected");
   };
 
   const isDisabled = () => {
@@ -39,7 +45,11 @@ function Quiz(props) {
             <h2>{props.quiz.question}</h2>
 
             <div id="quizAnswers">
-              <div className="answer selected">
+              <div
+                className="answer selected"
+                id={props.quiz.answers[0].answer_id}
+                onClick={handleSelect}
+              >
                 {props.quiz.answers[0].text}
                 <button
                   id={props.quiz.answers[0].answer_id}
@@ -51,7 +61,11 @@ function Quiz(props) {
                 </button>
               </div>
 
-              <div className="answer">
+              <div
+                className="answer"
+                id={props.quiz.answers[1].answer_id}
+                onClick={handleSelect}
+              >
                 {props.quiz.answers[1].text}
                 <button
                   id={props.quiz.answers[1].answer_id}
