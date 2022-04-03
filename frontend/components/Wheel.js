@@ -5,20 +5,20 @@ import { moveClockwise, moveCounterClockwise } from "../state/action-creators";
 function Wheel(props) {
   useEffect(() => {
     const cog = document.querySelector(`#wheel :nth-child(${props.wheel + 1})`);
-    cog.innerText = "B";
+    cog.textContent = "B";
     cog.classList.add("active");
   }, [props.wheel]);
 
   const clockwiseClick = () => {
     const cog = document.querySelector(`#wheel :nth-child(${props.wheel + 1})`);
-    cog.innerText = "";
+    cog.textContent = "";
     cog.classList.remove("active");
     props.moveClockwise();
   };
 
   const counterClockwiseClick = () => {
     const cog = document.querySelector(`#wheel :nth-child(${props.wheel + 1})`);
-    cog.innerText = "";
+    cog.textContent = "";
     cog.classList.remove("active");
     props.moveCounterClockwise();
   };
