@@ -38,11 +38,8 @@ function wheel(state = initialWheelState, action) {
 const initialQuizState = null;
 function quiz(state = initialQuizState, action) {
   switch (action.type) {
-    case SET_SELECTED_ANSWER: {
-      return;
-    }
     case SET_QUIZ_INTO_STATE: {
-      return;
+      return (state = action.payload);
     }
     default:
       return state;
@@ -52,6 +49,9 @@ function quiz(state = initialQuizState, action) {
 const initialSelectedAnswerState = null;
 function selectedAnswer(state = initialSelectedAnswerState, action) {
   switch (action.type) {
+    case SET_SELECTED_ANSWER: {
+      return (state = action.payload);
+    }
     default:
       return state;
   }
@@ -61,7 +61,7 @@ const initialMessageState = "";
 function infoMessage(state = initialMessageState, action) {
   switch (action.type) {
     case SET_INFO_MESSAGE: {
-      return;
+      return (state = action.payload);
     }
     default:
       return state;

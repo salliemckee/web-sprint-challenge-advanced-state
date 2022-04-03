@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import {
   selectAnswer,
@@ -9,27 +9,68 @@ import {
 } from "../state/action-creators";
 
 function Quiz(props) {
+  useEffect(() => {
+    props.fetchQuiz();
+  }, []);
+
+  const handleSelect = (e) => {
+    props.selectAnswer(e.target.id);
+    props.setMessage("");
+  };
+
+  const isDisabled = () => {
+    if (props.selectedAnswer) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const handleSubmit = () => {
+    props.postAnswer(props.selectedAnswer, props.quiz.quiz_id);
+  };
+
   return (
     <div id="wrapper">
       {
         // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
         props.quiz ? (
           <>
-            <h2>What is a closure?</h2>
+            <h2>{props.quiz.question}</h2>
 
             <div id="quizAnswers">
               <div className="answer selected">
-                A function
-                <button>SELECTED</button>
+                {props.quiz.answers[0].text}
+                <button
+                  id={props.quiz.answers[0].answer_id}
+                  onClick={handleSelect}
+                >
+                  {props.selectedAnswer === props.quiz.answers[0].answer_id
+                    ? "SELECTED"
+                    : "Select"}
+                </button>
               </div>
 
               <div className="answer">
-                An elephant
-                <button>Select</button>
+                {props.quiz.answers[1].text}
+                <button
+                  id={props.quiz.answers[1].answer_id}
+                  onClick={handleSelect}
+                >
+                  {props.selectedAnswer === props.quiz.answers[1].answer_id
+                    ? "SELECTED"
+                    : "Select"}
+                </button>
               </div>
             </div>
 
-            <button id="submitAnswerBtn">Submit answer</button>
+            <button
+              id="submitAnswerBtn"
+              onClick={handleSubmit}
+              disabled={isDisabled()}
+            >
+              Submit answer
+            </button>
           </>
         ) : (
           "Loading next quiz..."
@@ -39,11 +80,10 @@ function Quiz(props) {
   );
 }
 
-const mapStateToProps = ({ quiz, selectedAnswer, infoMessage }) => {
+const mapStateToProps = ({ quiz, selectedAnswer }) => {
   return {
     quiz,
     selectedAnswer,
-    infoMessage,
   };
 };
 

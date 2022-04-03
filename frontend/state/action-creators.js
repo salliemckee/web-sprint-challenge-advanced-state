@@ -62,24 +62,37 @@ export function fetchQuiz() {
     // First, dispatch an action to reset the quiz state (so the "Loading next quiz..." message can display)
     // On successful GET:
     // - Dispatch an action to send the obtained quiz to its state
-    dispatch({ type: RESET_FORM });
+    dispatch(setQuiz(null));
 
     axios
       .get("http://localhost:9000/api/quiz/next")
       .then((res) => {
-        console.log(res.data);
+        dispatch(setQuiz(res.data));
       })
       .catch((err) => {
         console.log(err);
       });
   };
 }
-export function postAnswer() {
+export function postAnswer(answer_id, quiz_id) {
   return function (dispatch) {
     // On successful POST:
     // - Dispatch an action to reset the selected answer state
     // - Dispatch an action to set the server message to state
     // - Dispatch the fetching of the next quiz
+    axios
+      .post("http://localhost:9000/api/quiz/answer", {
+        quiz_id: quiz_id,
+        answer_id: answer_id,
+      })
+      .then((res) => {
+        dispatch(selectAnswer(null));
+        dispatch(setMessage(res.data.message));
+        dispatch(fetchQuiz());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 }
 export function postQuiz() {
